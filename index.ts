@@ -9,6 +9,13 @@ const app = expres()
 
 app.use(expres.json())
 app.use(cors())
+app.use(expres.urlencoded({ extended: true }))
+app.post("/testing",(req,res)=>{
+    console.log("someone is hitting the /testing endpoint")
+    res.status(200).json({
+        msg:"Route is working"
+    })
+})
 
 // app.post('/prompt',async function(req,res){
 //     const difficultyLevel = req.body.difficultyLevel
@@ -87,6 +94,7 @@ app.use(cors())
 
 
 app.post("/prompt",async function(req,res){
+    console.log("someone is hittin the /prompt endpoint")
     const difficultyLevel = req.body.difficultyLevel
     const topic = req.body.topic
     const question = req.body.question
@@ -122,6 +130,7 @@ app.post("/check",async function(req,res){
 
 
 app.post("/checkbox",async function(req,res){
+    console.log("someone is hitting the /checkbox end point")
     const difficultyLevel = req.body.difficultyLevel
     const topic = req.body.topic
     const question = req.body.question
@@ -301,6 +310,7 @@ const fixInvalidJSON = (data: string) => {
   };
 
 app.post('/submit',async function(req,res){
+    console.log("someone is hittin the /submit endpoint")
     let questions:any = []
     let answer:any = []
 
