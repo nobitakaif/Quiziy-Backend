@@ -3,7 +3,7 @@ import cors from "cors"
 import { GoogleGenAI } from "@google/genai"
 import { GoogleGenerativeAI } from "@google/generative-ai"
 
-const ai = new GoogleGenAI( {apiKey:"AIzaSyBI_rcNNuwuEx5lzIzlKZjjPvfVOosC01g"} );
+const ai = new GoogleGenAI( {apiKey:process.env.GEMINI_API_KEY} );
 // const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });
 const app = expres()
 
