@@ -309,6 +309,69 @@ const fixInvalidJSON = (data: string) => {
     return fixedData;
   };
 
+
+  const checkQuiz = async (question: string, answer: string): Promise<Boolean | null> => {
+    const response = await ai.models.generateContent({
+        model: "gemini-1.5-flash",
+        contents: [{
+            role: "user",
+            parts: [{
+                 text: `You are a strict teacher. Only reply "true" if the answer is correct, or "false" if it is incorrect. and explain why answer is wrong. Question: ${question} Answer: ${answer}. Questoin - Answer can be anything you need to return the true and false based on the question. answer will be associated to the question
+                 here is the some example of how you need to perform:
+                    eg.1    question - "what is 2+2"
+                            answer - "4" 
+                            return true -> because the sum of 2+2 is 4 and the answer is 4 so you have to return true
+                    eg.2    question - "who is the king of forest"
+                            answer - "lion"
+                            return true -> because the king of forest is lion answer is correct so you need to return true
+                    eg.3    question - "is india country"
+                            answer - "no"
+                            return false -> because india is country and the answer is no so you need to return false
+                    eg.4    question - "what is the full form of HTML?"
+                            answer - "Hyper Temp Mermory Language
+                            return false -> because the full of html is Hyper Text Markup Language so you need to return false
+                    
+                NOTE: Question could be anything, your task only to check the answer is correct or not if correct then return "true" otherwise "false"  
+                also you need to tell us why this question is wrong
+                 `
+
+            }]
+        }]
+    });
+
+    // const ans = response.text
+    const ans = response.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+    console.log("AI response:", ans);
+    
+    return ans?.trim().toLowerCase().startsWith("true");
+
+}
+
+app.post('/quizy',async function(req,res){
+    const questions = req.body.one
+    const answers = req.body.sec
+    let totalCorrect = 0
+    for(let i = 0; i < questions.length;i++){
+        const result = checkQuiz(questions[i],answers[i])
+        if(!result){
+            return 
+        }
+        if(await result == true){
+            totalCorrect= totalCorrect+1
+        }
+    }
+
+
+    const result = await checkQuiz(questions,answers)
+    console.log(result)
+    res.status(200).json({
+        totalQuestion : questions.length,
+        totalCorrect : totalCorrect
+    })
+})
+
+
 app.post('/submit',async function(req,res){
     console.log("someone is hittin the /submit endpoint")
     let questions:any = []
