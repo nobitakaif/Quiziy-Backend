@@ -4,6 +4,7 @@ const a = [
     {
         "Q.1": "What's the most efficient way to handle asynchronous operations in a large-scale JavaScript web application, prioritizing performance and maintainability?",
         "options": [
+            
             {
                 "a": "Callbacks"
             },
@@ -50,4 +51,10 @@ const b =[
 console.log(typeof('a'))
 // console.log(n[2])
 
+
+const string = "true — The correct answer is a data structure that stores a collection of elements of the same data type.  The provided answer is completely unrelated.\n"
+
+let change = string.trim().toLocaleLowerCase()
+console.log(typeof(change))
+console.log(change)
 
