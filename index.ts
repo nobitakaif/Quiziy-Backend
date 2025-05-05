@@ -474,17 +474,18 @@ app.post('/quizy',async function(req,res){
     const questions = req.body.one
     const answers = req.body.sec
     let totalCorrect = 0
+    let result = []
     console.log(questions," ",answers)
     for(let i = 0; i < questions.length;i++){
-        const result = checkQuiz(questions[i],answers[i])
-        if(await result == true){
+        result[i] = checkQuiz(questions[i],answers[i])
+        if(await result[i] == true){
             totalCorrect= totalCorrect+1
         }
     }
 
     
 
-    let result = await checkQuiz(questions,answers)
+    // let result = await checkQuiz(questions,answers)
     // result?.trim().toLowerCase().startsWith("false");
     console.log('inside the route',result)
     res.status(200).json({
