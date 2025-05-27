@@ -10,6 +10,14 @@ const app = expres()
 app.use(expres.json())
 app.use(cors())
 app.use(expres.urlencoded({ extended: true }))
+
+app.get('/',(req,res)=>{
+    console.log("someone is hitting home route")
+    res.status(200).json({
+        msg:"everything is fine"
+    })
+})
+
 app.post("/testing",(req,res)=>{
     console.log("someone is hitting the /testing endpoint")
     res.status(200).json({
@@ -475,7 +483,9 @@ app.post('/quizy',async function(req,res){
     const answers = req.body.sec
     let totalCorrect = 0
     let result = []
-    console.log(questions," ",answers)
+    console.log(`get Question from client ${questions}, get Answer from client ${answers}`)
+    console.log(questions ," ", answers)
+    console.log(typeof(questions))
     for(let i = 0; i < questions.length;i++){
         result[i] = checkQuiz(questions[i],answers[i])
         if(await result[i] == true){
