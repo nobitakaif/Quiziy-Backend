@@ -7,6 +7,7 @@ const ai = new GoogleGenAI( {apiKey:process.env.GEMINI_API_KEY} );
 // const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });
 const app = expres()
 
+
 app.use(expres.json())
 app.use(cors())
 app.use(expres.urlencoded({ extended: true }))
