@@ -9,7 +9,7 @@ const app = expres()
 
 
 app.use(expres.json())
-app.use(cors())
+app.use('*',cors())
 app.use(expres.urlencoded({ extended: true }))
 
 app.get('/',(req,res)=>{
