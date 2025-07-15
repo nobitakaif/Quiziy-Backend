@@ -9,8 +9,8 @@ const app = expres()
 
 
 app.use(expres.json())
-app.use('*',cors())
-app.use(expres.urlencoded({ extended: true }))
+app.use(cors())
+// app.use(expres.urlencoded({ extended: true }))
 
 app.get('/',(req,res)=>{
     console.log("someone is hitting home route")
