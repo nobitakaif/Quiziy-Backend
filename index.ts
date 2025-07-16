@@ -606,6 +606,104 @@ app.post('/submit',async function(req,res){
     })
 })
 
+app.post('/prompt-submit',async (req,res)=>{
+    const {question , answer} = req.body
+
+    console.log("someone is hitting /prompt-submit endpoint")
+     async function checkResult(){
+        const response = await ai.models.generateContent({
+            model:"gemini-1.5-flash",
+            contents:[{
+                role:"user",                             
+                parts:[{text:`{
+                    You are given two arrays:
+
+
+                    1. 'question' - an array of questions in string format. Question can be anything 
+                    2. 'answer' - an array of answers corresponding to each question.
+
+                    Your task is to evaluate each question and check if the provided answer is correct.
+
+                    Rules (strictly follow this):
+                    - Evaluate each question yourself (e.g., solve "what is 2+2").
+                    - Compare the result with the corresponding value in the 'answer' array.
+                    - If the answer is correct, return true; if incorrect, return false.
+                    - Your final output should be a JSON object that includes:
+                    - 'response': an array of booleans (true/false), one for each question.
+                    - 'totalCorrect': an integer representing how many answers were correct.
+
+                    Important:
+                    - The length of the 'response' array must exactly match the length of the 'question' array.
+                    - Only provide the response in the required JSON format.
+                    - Do not include explanations or extra messages in the output.
+                    - you have to give the give the response 100% accurate. This is most important based on your response i will marks out the students so please don't make any mistake
+                    - you have to act like an examminar
+
+                    Example input:
+                    {
+                    "question": ["what is 2+2", "what is 3+3", "what is 2*5"],
+                    "answer": [4, 6, 20]
+                    }
+                    answer of questoin[0] is answer[0] something like this for all elements
+                    Expected output:
+                    {
+                    "response": [true, true, false],
+                    "totalCorrect": 2
+                    }
+                    you have to apply alll the example to this given question and given answer
+                    here is your question ${question}
+                    here is your answer ${answer}
+
+
+                `}]
+                }],
+                
+        })
+        return response.text
+    }
+    let getResposneFromAi:number = 0
+     async function myResult(){
+        const response = await ai.models.generateContent({
+            model:"gemini-1.5-flash",
+            contents:[{
+                role:"user",                             
+                parts:[{text:`{
+                    You are given two arrays:
+
+                    question : in this array i'll give you question 
+                    answer : in this array i'll give you answer related to question 
+                    you have to check the answer is correct or not if the answer you have increase this number ${getResposneFromAi} by one 
+
+                    pattern :-
+                    question = ['what is 2+2','what is 3-3']
+                    answer = ['4','0']
+                    both are the answer is correct you have to return only 2
+                    question answer could be anything 
+
+
+                    
+                    you have to apply alll the example to this given question and given answer
+                    here is your question ${question}
+                    here is your answer ${answer}
+
+
+                `}]
+                }],
+
+                
+        })
+        console.log(response.text)
+        return response.text
+       
+    }
+     const output = await myResult()
+        console.log(output)
+        // return response.text
+        res.json({
+            totalAnswer:output
+        })
+})
+
 app.listen(3002,()=>{
     console.log("server is running or port 3002")
 })
